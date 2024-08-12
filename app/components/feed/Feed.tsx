@@ -107,9 +107,9 @@ const Feed = async({username}:{username?:string}) => {
       {allPosts?.length ? (allPosts.map(post=>(
         <Post key={post.id} post={post}/>
       ))) : "No posts found!"}
-      {posts?.length ? (posts.map(post=>(
+      {posts?.length && (posts.map(post=>(
         <Post key={post.id} post={post}/>
-      ))) : "No posts found!"}
+      )))}
 
 
     </div>

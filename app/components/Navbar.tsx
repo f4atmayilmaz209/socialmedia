@@ -54,7 +54,7 @@ const Navbar = () => {
                 <SignedOut>
                     <div className='flex items-center gap-1 justify-between text-sm'>
                         <Image src="/login.png" alt="" width={20} height={20}/>
-                        <Link href="/sign-in" className="underline">Login or Register</Link>
+                        <Link href="/sign-in" className="underline">Login/Register</Link>
  
                     </div>
                 </SignedOut>
