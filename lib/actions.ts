@@ -394,9 +394,9 @@ export const createUser=async(formData:FormData)=>{
 
             }
         })
-        if(user){
-            redirect("https://socialmedia-uhsb-git-main-f4atmayilmaz209s-projects.vercel.app/profile")
-        }
+
+        redirect("https://socialmedia-uhsb-git-main-f4atmayilmaz209s-projects.vercel.app/profile")
+
 
     } catch (error) {
         console.log(error)
