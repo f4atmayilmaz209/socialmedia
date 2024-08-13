@@ -385,22 +385,15 @@ export const createUser=async(formData:FormData)=>{
         return
     }
 
-    try {
-        const user=await prisma.user.create({
-            data:{
-                username,
-                surname,
-                password,
-                email
+    const user=await prisma.user.create({
+        data:{
+            username,
+            surname,
+            password,
+            email
 
-            }
-        })
+        }
+    })
 
-        redirect("/profile")
-
-
-    } catch (error) {
-        console.log(error)
-    }
-
+    redirect("/profile")
 }
