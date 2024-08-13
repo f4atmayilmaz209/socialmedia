@@ -32,6 +32,8 @@ const StoryList = ({stories,userId}:{stories:StoryWithUser[],userId:string}) => 
                 username:"Sending...",
                 avatar:user?.imageUrl || "/noAvatar.png",
                 cover:"",
+                password:"",
+                email:"",
                 description:"",
                 name:"",
                 surname:"",
