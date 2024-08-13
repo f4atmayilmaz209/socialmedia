@@ -359,3 +359,43 @@ export const allUsers=async()=>{
         
     }
 }
+
+
+export const createUser=async(formData:FormData)=>{
+
+    const username=formData.get("name") as string;
+    const Name=z.string().min(1).max(255)
+    const validatedName=Name.safeParse(username)
+    const surname=formData.get("surname") as string;
+    const Surname=z.string().min(1).max(255)
+    const validatedSurname=Surname.safeParse(surname)
+    const password=formData.get("password") as string;
+    const Password=z.string().min(1).max(255)
+    const validatedPassword=Password.safeParse(password)
+    const email=formData.get("email") as string;
+    const Email=z.string().email().min(1).max(255)
+    const validatedEmail=Email.safeParse(email)
+
+
+    if(!validatedName.success){
+        console.log("name is not value!")
+        return
+    }
+
+    try {
+        const user=await prisma.user.create({
+            data:{
+                username,
+                surname,
+                password,
+                email
+
+            }
+        })
+
+        revalidatePath("/")
+    } catch (error) {
+        console.log(error)
+    }
+
+}
