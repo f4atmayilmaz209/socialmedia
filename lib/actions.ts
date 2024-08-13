@@ -4,6 +4,8 @@ import { auth } from "@clerk/nextjs/server"
 import prisma from "./client"
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
+import { useRouter } from 'next/router'
+import { redirect } from "next/navigation";
 
 export const switchFollow=async(userId:string)=>{
 
@@ -392,8 +394,10 @@ export const createUser=async(formData:FormData)=>{
 
             }
         })
+        if(user){
+            redirect("/")
+        }
 
-        revalidatePath("/")
     } catch (error) {
         console.log(error)
     }
