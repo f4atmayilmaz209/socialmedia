@@ -364,6 +364,7 @@ export const allUsers=async()=>{
 
 
 export const createUser=async(formData:FormData)=>{
+    "use server";
 
     const username=formData.get("name") as string;
     const Name=z.string().min(1).max(255)
