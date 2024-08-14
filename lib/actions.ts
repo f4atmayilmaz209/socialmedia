@@ -402,3 +402,14 @@ export const createUser=async(formData:FormData)=>{
 
    redirect(`https://socialmedia-uhsb-p3wfky1hs-f4atmayilmaz209s-projects.vercel.app/profile/${username}`)
 }
+
+
+export const loginUser=async(formData:FormData)=>{
+
+    const password=formData.get("password") as string;
+    const Password=z.string().min(1).max(255)
+    const validatedPassword=Password.safeParse(password)
+    const email=formData.get("email") as string;
+    const Email=z.string().email().min(1).max(255)
+    const validatedEmail=Email.safeParse(email)
+}
