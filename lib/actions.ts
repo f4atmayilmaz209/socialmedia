@@ -385,15 +385,20 @@ export const createUser=async(formData:FormData)=>{
         return
     }
 
-    const user=await prisma.user.create({
-        data:{
-            username,
-            surname,
-            password,
-            email
+    try {   
+        const user=await prisma.user.create({
+            data:{
+                username,
+                surname,
+                password,
+                email
+            }
+        })
 
-        }
-    })
+    } catch (error) {
+        console.log(error)
+    }
 
-    redirect("/profile")
+
+   redirect(`https://socialmedia-uhsb-p3wfky1hs-f4atmayilmaz209s-projects.vercel.app/profile/${username}`)
 }
