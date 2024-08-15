@@ -13,7 +13,7 @@ export default function Page() {
         <div className="h-[540px] w-[350px] shadow-xl rounded-md items-center justify-center flex m-auto">
  
           <form action={(formData)=>createUser(formData)}> 
-            <span className="text-heading2-bold text-blue-400 items-center justify-center flex mt-30"><Link href="/login" className="underline">Login</Link>/Register</span>
+            <span className="text-heading2-bold text-blue-500 items-center justify-center flex mt-30"><Link href="/login" className="underline">Login</Link>/Register</span>
 
             <div className='flex flex-col gap-2 mb-4 mt-10'>
               <label htmlFor="">Name</label>
