@@ -400,7 +400,7 @@ export const createUser=async(formData:FormData)=>{
     }
 
 
-   redirect(`https://socialmedia-uhsb-p3wfky1hs-f4atmayilmaz209s-projects.vercel.app/profile/${username}`)
+   redirect(`https://socialmedia-uhsb-p3wfky1hs-f4atmayilmaz209s-projects.vercel.app/login`)
 }
 
 
