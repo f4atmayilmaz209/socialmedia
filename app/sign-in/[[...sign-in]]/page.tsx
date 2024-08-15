@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export default function Page() {
 
-
+ 
   return(
     <div className="h-[calc(100vh-96px)] flex items-center justify-center min-w-[800px] gap-12">
         <SignIn />
