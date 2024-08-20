@@ -268,7 +268,7 @@ export const addComment=async(postId:string,desc:string)=>{
 }
 
 
-export const addPost=async(formData:FormData,img:string)=>{
+export const addPost=async(formData:FormData,img:string,userId2?:string)=>{
     
 
     const desc=formData.get("desc") as string;
@@ -280,20 +280,37 @@ export const addPost=async(formData:FormData,img:string)=>{
         return
     }
     const {userId}=auth()
-    if(!userId) throw new Error("User is not authenticated!")
-
-    try {
-        await prisma.post.create({
-            data:{
-                desc:validatedDesc.data,
-                userId,
-                img
-            }
-        })
-        revalidatePath("/")
-    } catch (error) {
-        console.log(error)
+    
+    if(!userId && !userId2) throw new Error("User is not authenticated!")
+    if(userId){
+        try {
+            await prisma.post.create({
+                data:{
+                    desc:validatedDesc.data,
+                    userId,
+                    img
+                }
+            })
+            revalidatePath("/")
+        } catch (error) {
+            console.log(error)
+        }
+    }else{
+        try {
+            const userId=userId2 as string
+            await prisma.post.create({
+                data:{
+                    desc:validatedDesc.data,
+                    userId,
+                    img
+                }
+            })
+            revalidatePath("/")
+        } catch (error) {
+            console.log(error)
+        }
     }
+
 
 }
 

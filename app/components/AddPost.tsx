@@ -1,12 +1,11 @@
 "use client";
-import { auth } from '@clerk/nextjs/server';
 import Image from 'next/image'
 import React, { useState } from 'react'
-import { currentUser } from '@clerk/nextjs/server';
 import { useUser } from '@clerk/nextjs';
 import { CldUploadWidget } from 'next-cloudinary';
 import AddPostButton from './AddPostButton';
 import { addPost } from '@/lib/actions';
+import { useAuthStore } from '@/lib/store';
 
 const AddPost = () => {
 
@@ -14,6 +13,7 @@ const AddPost = () => {
   const {user,isLoaded}=useUser()
   const [desc,setDesc]=useState("")
   const [img,setImg]=useState<any>()
+  const userId2=useAuthStore((state)=>state.user)
 
   if(!isLoaded){
     return "Loading..."
@@ -26,7 +26,7 @@ const AddPost = () => {
       {/*POST*/}
       <div className='flex-1'>
         {/*TEXT INPUT*/}
-        <form action={(formData)=>addPost(formData,img?.secure_url || "")} className='flex gap-4'>
+        <form action={(formData)=>addPost(formData,img?.secure_url || "",userId2?.id)} className='flex gap-4'>
           <textarea onChange={(e)=>setDesc(e.target.value)} name="desc" placeholder="What'S on your mind?" className='flex-1 bg-slate-100 rounded-lg p-2'></textarea>
           <div className=''>
             <Image src="/emoji.png" width={20} height={20} alt="" className="w-5 h-5 cursor-pointer self-end"/>
