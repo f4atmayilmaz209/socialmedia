@@ -4,8 +4,10 @@ import { auth } from "@clerk/nextjs/server"
 import prisma from "./client"
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
-import { useRouter } from 'next/router'
 import { redirect } from "next/navigation";
+import bcrypt from "bcryptjs";
+import { schema } from "./schema";
+
 
 export const switchFollow=async(userId:string)=>{
 
@@ -361,55 +363,108 @@ export const allUsers=async()=>{
         
     }
 }
-
+ 
 
 export const createUser=async(formData:FormData)=>{
-    "use server";
 
-    const username=formData.get("name") as string;
-    const Name=z.string().min(1).max(255)
-    const validatedName=Name.safeParse(username)
-    const surname=formData.get("surname") as string;
-    const Surname=z.string().min(1).max(255)
-    const validatedSurname=Surname.safeParse(surname)
-    const password=formData.get("password") as string;
-    const Password=z.string().min(1).max(255)
-    const validatedPassword=Password.safeParse(password)
-    const email=formData.get("email") as string;
-    const Email=z.string().email().min(1).max(255)
-    const validatedEmail=Email.safeParse(email)
+    const validation = schema.safeParse({
+        username: formData.get("name") as string,
+        surname: formData.get("surname") as string,
+        email:formData.get("email") as string,
+        password:formData.get("password") as string,
+      });
 
 
-    if(!validatedName.success){
-        console.log("name is not value!")
-        return
-    }
-
-    try {   
+    if(validation.success){
+            
+        const {password,...others} = validation?.data;
+        const hashedPassword = await bcrypt.hash(password, 10);
         const user=await prisma.user.create({
             data:{
-                username,
-                surname,
-                password,
-                email
+                username:validation.data.username,
+                surname:validation.data.surname,
+                email:validation.data.email,
+                password:hashedPassword
             }
         })
-
-    } catch (error) {
-        console.log(error)
+    }else{
+        return {
+            errors: validation.error.flatten().fieldErrors,
+          };
     }
 
+   redirect(`http://localhost:3000/login`)
 
-   redirect("https://socialmedia-uhsb-git-main-f4atmayilmaz209s-projects.vercel.app/login")
+
 }
 
 
-export const loginUser=async(formData:FormData)=>{
 
-    const password=formData.get("password") as string;
-    const Password=z.string().min(1).max(255)
-    const validatedPassword=Password.safeParse(password)
-    const email=formData.get("email") as string;
-    const Email=z.string().email().min(1).max(255)
-    const validatedEmail=Email.safeParse(email)
+export const getUser=async(username:string)=>{
+
+
+
+    const user=await prisma.user.findFirst({
+        where:{
+            username:username,
+
+        },
+        include:{
+            _count:{
+                select:{
+                    followers:true,
+                    following:true,
+                    posts:true
+                }
+            }
+        }
+    })
+
+    return user
+
+}
+
+
+
+export const getBlock=async(blockerId:string,blockedId:string)=>{
+ 
+    const res=await prisma.block.findFirst({
+        where:{
+            blockerId:blockerId,
+            blockedId:blockedId
+        }
+    })
+    return res;
+
+
+}
+export const loginUserII=async(username:string,password:string)=>{
+
+
+
+    let user;
+    if(username){
+        user=await prisma.user.findFirst({
+        where:{
+            username:username,
+
+        },
+        include:{
+            _count:{
+                select:{
+                    followers:true,
+                    following:true,
+                    posts:true
+                }
+            }
+        }
+    })
+    }
+    if(user?.password){
+        const match = await bcrypt.compare(password, user?.password);
+        if(match){
+            return user;
+        }
+
+    }
 }
