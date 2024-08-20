@@ -96,7 +96,7 @@ const Navbar = () => {
                     </div>
                     <div className='cursor-pointer relative' onClick={()=>setControl(prev=>!prev)}>
                         <Image className="w-10 h-10 rounded-full object-cover" src={ user?.cover || "/noCover.png"} alt="" width={10} height={10}/>
-                        {control && <div onClick={()=>handleLogout()} className='flex flex-col absolute top-0 left-14 right-30 h-18 w-30 p-1 rounded-2xl z-10 text-gray-600 items-center justify-center text-xs ring-1 ring-cyan-600 font-sans'>Logout</div>}
+                        {control && <div onClick={()=>handleLogout()} className='flex flex-col absolute top-2 left-14 right-30 h-18 w-30 p-1 rounded-2xl z-10 text-gray-600 items-center justify-center text-xs ring-1 ring-cyan-600 font-sans'>Logout</div>}
                     </div>
 
                 </div>
